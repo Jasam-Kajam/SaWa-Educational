@@ -12,7 +12,7 @@
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
 <script>
-  const backendURL = "https://your-render-backend-url.onrender.com";
+  const backendURL = "https://your-render-backend-url.onrender.com"; // replace with your Render backend URL
 
   fetch(backendURL + "/materials")
     .then(res => res.json())
@@ -38,14 +38,29 @@
     });
 
   function payAndDownload(item) {
+    const email = prompt("Enter your email to continue:");
     const handler = PaystackPop.setup({
       key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
-      email: prompt("Enter your email to continue:"),
+      email: email,
       currency: "KES",
       amount: 50 * 100, // Amount in kobo
       callback: function(response) {
-        alert('Payment successful! Transaction: ' + response.reference);
-        window.open(item.url, '_blank');
+        alert('Payment successful! Verifying...');
+        fetch(backendURL + "/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reference: response.reference, materialId: item.id })
+        }).then(res => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error("Payment verification failed");
+          }
+        }).then(data => {
+          window.open(data.downloadUrl, '_blank');
+        }).catch(err => {
+          alert("Verification failed: " + err.message);
+        });
       },
       onClose: function() {
         alert('Payment cancelled');

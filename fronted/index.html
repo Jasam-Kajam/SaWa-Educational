@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wafula Educational Posts</title>
+</head>
+<body>
+
+<h1>Wafula Educational Posts</h1>
+<div id="materials"></div>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+  const backendURL = "https://your-render-backend-url.onrender.com";
+
+  fetch(backendURL + "/materials")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("materials");
+      data.forEach(item => {
+        const div = document.createElement("div");
+        div.innerHTML = `<h3>${item.title} (${item.category})</h3>
+                         <p>Type: ${item.fileType}</p>`;
+
+        if (item.fileType === "PDF") {
+          const button = document.createElement("button");
+          button.innerText = "Pay & Download (KES 50)";
+          button.onclick = () => payAndDownload(item);
+          div.appendChild(button);
+        } else {
+          div.innerHTML += `<a href="${item.url}" target="_blank">View / Download</a>`;
+        }
+
+        div.innerHTML += "<hr>";
+        container.appendChild(div);
+      });
+    });
+
+  function payAndDownload(item) {
+    const handler = PaystackPop.setup({
+      key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
+      email: prompt("Enter your email to continue:"),
+      currency: "KES",
+      amount: 50 * 100, // Amount in kobo
+      callback: function(response) {
+        alert('Payment successful! Transaction: ' + response.reference);
+        window.open(item.url, '_blank');
+      },
+      onClose: function() {
+        alert('Payment cancelled');
+      }
+    });
+    handler.openIframe();
+  }
+</script>
+
+</body>
+</html>

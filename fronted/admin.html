@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - Wafula Educational Posts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background-color: #f7f7f7;
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    h2 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Admin Login</h2>
+
+<input type="text" id="username" placeholder="Username" />
+<input type="password" id="password" placeholder="Password" />
+<button onclick="login()">Login</button>
+
+<p id="error" style="color: red; text-align: center;"></p>
+
+<script>
+  function login() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+
+    // Save encoded credentials to sessionStorage
+    const credentials = btoa(user + ':' + pass);
+    sessionStorage.setItem('auth', credentials);
+
+    // Optionally test credentials by pinging the backend
+    fetch("https://your-render-backend.onrender.com/upload", {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + credentials
+      }
+    }).then(res => {
+      if (res.status === 401) {
+        document.getElementById("error").innerText = "Invalid login. Please try again.";
+      } else {
+        window.location.href = "upload.html";
+      }
+    }).catch(() => {
+      document.getElementById("error").innerText = "Could not reach backend.";
+    });
+  }
+</script>
+
+</body>
+</html>

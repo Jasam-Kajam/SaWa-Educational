@@ -1,69 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Wafula Educational Posts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .material {
+      border: 1px solid #ccc;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .material h3 {
+      margin: 0;
+    }
+    button {
+      margin-top: 10px;
+    }
+  </style>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body>
 
-<h1>Wafula Educational Posts</h1>
+<h1>📚 Wafula Educational Posts</h1>
 <div id="materials"></div>
 
-<script src="https://js.paystack.co/v1/inline.js"></script>
-
 <script>
-  const backendURL = "https://sawa-educational.onrender.com"; // replace with your Render backend URL
+  const backendURL = "https://sawa-educational.onrender.com"; // Replace with your backend URL
 
   fetch(backendURL + "/materials")
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("materials");
-      data.forEach(item => {
+      data.forEach(m => {
         const div = document.createElement("div");
-        div.innerHTML = `<h3>${item.title} (${item.category})</h3>
-                         <p>Type: ${item.fileType}</p>`;
-
-        if (item.fileType === "PDF") {
-          const button = document.createElement("button");
-          button.innerText = "Pay & Download (KES 50)";
-          button.onclick = () => payAndDownload(item);
-          div.appendChild(button);
-        } else {
-          div.innerHTML += `<a href="${item.url}" target="_blank">View / Download</a>`;
-        }
-
-        div.innerHTML += "<hr>";
+        div.className = "material";
+        div.innerHTML = `
+          <h3>${m.title}</h3>
+          <p><strong>Category:</strong> ${m.category}</p>
+          <p><strong>Type:</strong> ${m.fileType}</p>
+          ${m.fileType === "PDF" ? `<button onclick="pay('${m.id}')">Pay 50 to Download PDF</button>` 
+                                 : `<a href="${m.url}" target="_blank">View</a>`}
+        `;
         container.appendChild(div);
       });
     });
 
-  function payAndDownload(item) {
-    const email = prompt("Enter your email to continue:");
+  function pay(materialId) {
     const handler = PaystackPop.setup({
       key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
-      email: email,
+      email: "user@wafula.com",
+      amount: 5000,
       currency: "KES",
-      amount: 50 * 100, // Amount in kobo
       callback: function(response) {
-        alert('Payment successful! Verifying...');
         fetch(backendURL + "/verify-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ reference: response.reference, materialId: item.id })
-        }).then(res => {
-          if (res.ok) {
-            return res.json();
+          body: JSON.stringify({
+            reference: response.reference,
+            materialId: materialId
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.downloadUrl) {
+            window.open(data.downloadUrl, "_blank");
           } else {
-            throw new Error("Payment verification failed");
+            alert("Payment verification failed.");
           }
-        }).then(data => {
-          window.open(data.downloadUrl, '_blank');
-        }).catch(err => {
-          alert("Verification failed: " + err.message);
         });
       },
       onClose: function() {
-        alert('Payment cancelled');
+        alert("Payment cancelled.");
       }
     });
     handler.openIframe();

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Materials - Wafula Educational Posts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 60px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #message {
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Upload Educational Material</h2>
+
+<form id="upload-form">
+  <input type="text" id="title" placeholder="Enter Title" required />
+  
+  <select id="category" required>
+    <option value="" disabled selected>Select Category</option>
+    <option>Mathematics</option>
+    <option>Science</option>
+    <option>English</option>
+    <option>History</option>
+    <option>Geography</option>
+    <option>Computer Science</option>
+  </select>
+  
+  <select id="fileType" required>
+    <option value="" disabled selected>Select File Type</option>
+    <option>PDF</option>
+    <option>Video</option>
+    <option>Image</option>
+  </select>
+  
+  <input type="file" id="file" required />
+  
+  <button type="submit">Upload</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+  const backendURL = "https://your-render-backend.onrender.com"; // <-- Replace with your real backend URL
+
+  document.getElementById("upload-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", document.getElementById("title").value);
+    formData.append("category", document.getElementById("category").value);
+    formData.append("fileType", document.getElementById("fileType").value);
+    formData.append("file", document.getElementById("file").files[0]);
+
+    const auth = sessionStorage.getItem("auth");
+
+    fetch(backendURL + "/upload", {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + auth
+      },
+      body: formData
+    })
+    .then(res => {
+      if (res.ok) {
+        document.getElementById("message").innerText = "✅ Upload successful.";
+        document.getElementById("upload-form").reset();
+      } else {
+        document.getElementById("message").innerText = "❌ Upload failed. Check your login or file.";
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById("message").innerText = "🚫 Error uploading material.";
+    });
+  });
+</script>
+
+</body>
+</html>

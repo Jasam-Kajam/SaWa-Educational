@@ -20,7 +20,6 @@ admin.initializeApp({
 const db = admin.firestore();
 const bucket = admin.storage().bucket();
 
-// 🔐 Basic Admin Auth Middleware
 function checkAuth(req, res, next) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Basic ")) return res.status(401).send("Unauthorized");
@@ -35,7 +34,6 @@ function checkAuth(req, res, next) {
   }
 }
 
-// 📤 Upload Route
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.post("/upload", checkAuth, upload.single("file"), async (req, res) => {
@@ -73,14 +71,12 @@ app.post("/upload", checkAuth, upload.single("file"), async (req, res) => {
   stream.end(file.buffer);
 });
 
-// 📚 Get All Materials
 app.get("/materials", async (req, res) => {
   const snapshot = await db.collection("materials").orderBy("createdAt", "desc").get();
   const materials = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   res.json(materials);
 });
 
-// 💳 Verify Paystack Payment
 app.post("/verify-payment", async (req, res) => {
   const { reference, materialId } = req.body;
 
@@ -101,14 +97,12 @@ app.post("/verify-payment", async (req, res) => {
 
     res.json({ downloadUrl: material.data().url });
   } catch (err) {
-    console.error("Paystack error", err.response?.data || err.message);
     res.status(500).send("Payment verification failed");
   }
 });
 
-// 🔍 Health Check
 app.get("/", (req, res) => {
-  res.send("✅ Wafula Backend API is running");
+  res.send("✅ Wafula backend is running");
 });
 
 const PORT = process.env.PORT || 4000;

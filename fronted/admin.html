@@ -23,6 +23,11 @@
     h2 {
       text-align: center;
     }
+    #error {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -33,31 +38,29 @@
 <input type="password" id="password" placeholder="Password" />
 <button onclick="login()">Login</button>
 
-<p id="error" style="color: red; text-align: center;"></p>
+<p id="error"></p>
 
 <script>
   function login() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
+    const auth = btoa(user + ":" + pass);
+    sessionStorage.setItem("auth", auth);
 
-    // Save encoded credentials to sessionStorage
-    const credentials = btoa(user + ':' + pass);
-    sessionStorage.setItem('auth', credentials);
-
-    // Optionally test credentials by pinging the backend
-    fetch("https://sawa-educational-backend.onrender.com/upload", {
+    // Try to access protected upload route
+    fetch("https://sawa-educational.onrender.com/upload", {
       method: "POST",
       headers: {
-        "Authorization": "Basic " + credentials
+        "Authorization": "Basic " + auth
       }
     }).then(res => {
       if (res.status === 401) {
-        document.getElementById("error").innerText = "Invalid login. Please try again.";
+        document.getElementById("error").innerText = "❌ Invalid login. Please try again.";
       } else {
         window.location.href = "upload.html";
       }
     }).catch(() => {
-      document.getElementById("error").innerText = "Could not reach backend.";
+      document.getElementById("error").innerText = "⚠️ Backend not reachable.";
     });
   }
 </script>

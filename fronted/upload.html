@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Upload Materials - Wafula Educational Posts</title>
   <style>
     body {
@@ -35,7 +35,7 @@
 
 <form id="upload-form">
   <input type="text" id="title" placeholder="Enter Title" required />
-  
+
   <select id="category" required>
     <option value="" disabled selected>Select Category</option>
     <option>Mathematics</option>
@@ -45,23 +45,23 @@
     <option>Geography</option>
     <option>Computer Science</option>
   </select>
-  
+
   <select id="fileType" required>
     <option value="" disabled selected>Select File Type</option>
     <option>PDF</option>
     <option>Video</option>
     <option>Image</option>
   </select>
-  
+
   <input type="file" id="file" required />
-  
+
   <button type="submit">Upload</button>
 </form>
 
 <p id="message"></p>
 
 <script>
-  const backendURL = "https://your-render-backend.onrender.com"; // <-- Replace with your real backend URL
+  const backendURL = "https://sawa-educational.onrender.com"; // Replace with your deployed backend URL
 
   document.getElementById("upload-form").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -86,7 +86,7 @@
         document.getElementById("message").innerText = "✅ Upload successful.";
         document.getElementById("upload-form").reset();
       } else {
-        document.getElementById("message").innerText = "❌ Upload failed. Check your login or file.";
+        document.getElementById("message").innerText = "❌ Upload failed. Check login or file.";
       }
     })
     .catch(err => {

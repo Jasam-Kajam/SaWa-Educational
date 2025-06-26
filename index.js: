@@ -1,0 +1,36 @@
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json'); // ✅ Make sure this path is correct
+require('dotenv').config();
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://wafula-s-educational-posts-default-rtdb.firebaseio.com"
+});
+
+const db = admin.database();
+
+// ✅ This is the route that should respond
+app.get('/materials', async (req, res) => {
+  try {
+    const ref = db.ref("materials");
+    ref.once("value", (snapshot) => {
+      const data = snapshot.val() || {};
+      const values = Object.values(data);
+      res.status(200).json(values);
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch materials." });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
+});

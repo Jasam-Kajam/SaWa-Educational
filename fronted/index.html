@@ -1,85 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wafula Educational Posts</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .material {
-      border: 1px solid #ccc;
-      margin: 15px 0;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    .material h3 {
-      margin: 0;
-    }
-    button {
-      margin-top: 10px;
-    }
-  </style>
-  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <header>
+    <h1>📚 Wafula Educational Posts</h1>
+    <p>Access free learning materials. Pay 50 KES to download any PDF.</p>
+  </header>  <main>
+    <section id="materials-section">
+      <h2>Available Materials</h2>
+      <div id="materials-list">Loading...</div>
+    </section>
+  </main>  <footer>
+    <p>&copy; 2025 Wafula Educational Posts</p>
+  </footer>  <script>
+    const API_URL = 'https://<your-backend-on-render>.onrender.com';
 
-<h1>📚 Wafula Educational Posts</h1>
-<div id="materials"></div>
+    async function fetchMaterials() {
+      try {
+        const res = await fetch(`${API_URL}/materials`);
+        const data = await res.json();
 
-<script>
-  const backendURL = "https://sawa-educational.onrender.com"; // Replace with your backend URL
+        const list = document.getElementById('materials-list');
+        list.innerHTML = '';
 
-  fetch(backendURL + "/materials")
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("materials");
-      data.forEach(m => {
-        const div = document.createElement("div");
-        div.className = "material";
-        div.innerHTML = `
-          <h3>${m.title}</h3>
-          <p><strong>Category:</strong> ${m.category}</p>
-          <p><strong>Type:</strong> ${m.fileType}</p>
-          ${m.fileType === "PDF" ? `<button onclick="pay('${m.id}')">Pay 50 to Download PDF</button>` 
-                                 : `<a href="${m.url}" target="_blank">View</a>`}
-        `;
-        container.appendChild(div);
-      });
-    });
-
-  function pay(materialId) {
-    const handler = PaystackPop.setup({
-      key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
-      email: "user@wafula.com",
-      amount: 5000,
-      currency: "KES",
-      callback: function(response) {
-        fetch(backendURL + "/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            reference: response.reference,
-            materialId: materialId
-          })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.downloadUrl) {
-            window.open(data.downloadUrl, "_blank");
-          } else {
-            alert("Payment verification failed.");
-          }
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'material-card';
+          card.innerHTML = `
+            <h3>${item.title}</h3>
+            <p>Category: ${item.category}</p>
+            <p>Type: ${item.fileType}</p>
+            <button onclick="payToDownload('${item.id}')">Pay & Download</button>
+          `;
+          list.appendChild(card);
         });
-      },
-      onClose: function() {
-        alert("Payment cancelled.");
+      } catch (err) {
+        document.getElementById('materials-list').textContent = 'Failed to load materials.';
       }
-    });
-    handler.openIframe();
-  }
-</script>
+    }
 
-</body>
+    function payToDownload(materialId) {
+      const handler = PaystackPop.setup({
+        key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
+        email: 'user@example.com',
+        amount: 5000, // KES 50 = 5000 kobo
+        callback: function (response) {
+          verifyPayment(response.reference, materialId);
+        },
+        onClose: function () {
+          alert('Payment cancelled');
+        }
+      });
+      handler.openIframe();
+    }
+
+    async function verifyPayment(reference, materialId) {
+      const res = await fetch(`${API_URL}/verify-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference, materialId })
+      });
+      const result = await res.json();
+
+      if (result.downloadUrl) {
+        window.open(result.downloadUrl, '_blank');
+      } else {
+        alert('Payment failed. Try again.');
+      }
+    }
+
+    fetchMaterials();
+  </script>  <script src="https://js.paystack.co/v1/inline.js"></script></body>
 </html>

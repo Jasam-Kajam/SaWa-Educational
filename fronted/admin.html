@@ -1,69 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Login - Wafula Educational Posts</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 400px;
-      margin: 80px auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      background-color: #f7f7f7;
-    }
-    input, button {
-      display: block;
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 10px;
-      font-size: 16px;
-    }
-    h2 {
-      text-align: center;
-    }
-    #error {
-      text-align: center;
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Wafula Educational Posts</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h2>Admin Upload</h2>
+  <form id="uploadForm">
+    <input type="text" name="title" placeholder="Material Title" required />
+    <input type="text" name="category" placeholder="Category" required />
+    <select name="fileType" required>
+      <option value="pdf">PDF</option>
+      <option value="video">Video</option>
+      <option value="image">Image</option>
+    </select>
+    <input type="file" name="file" required />
+    <input type="password" name="adminPassword" placeholder="Admin Password" required />
+    <button type="submit">Upload</button>
+  </form>
 
-<h2>Admin Login</h2>
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
 
-<input type="text" id="username" placeholder="Username" />
-<input type="password" id="password" placeholder="Password" />
-<button onclick="login()">Login</button>
+      const res = await fetch('https://sawa-educational-backend.onrender.com/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Basic ' + btoa('admin:' + form.adminPassword.value)
+        },
+        body: formData
+      });
 
-<p id="error"></p>
-
-<script>
-  function login() {
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value.trim();
-    const auth = btoa(user + ":" + pass);
-    sessionStorage.setItem("auth", auth);
-
-    // Try to access protected upload route
-    fetch("https://sawa-educational.onrender.com/upload", {
-      method: "POST",
-      headers: {
-        "Authorization": "Basic " + auth
-      }
-    }).then(res => {
-      if (res.status === 401) {
-        document.getElementById("error").innerText = "❌ Invalid login. Please try again.";
-      } else {
-        window.location.href = "upload.html";
-      }
-    }).catch(() => {
-      document.getElementById("error").innerText = "⚠️ Backend not reachable.";
+      alert(await res.text());
     });
-  }
-</script>
-
+  </script>
 </body>
 </html>

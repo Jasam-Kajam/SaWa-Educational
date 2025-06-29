@@ -2,90 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wafula Educational Posts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Upload - Wafula Educational Posts</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f9fafb;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 20px;
       color: #1f2937;
     }
 
-    header {
-      background-color: #7c3aed;
-      color: white;
+    .login, .upload-section {
+      max-width: 400px;
+      background: white;
+      margin: 40px auto;
       padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    h2 {
       text-align: center;
-      font-size: 24px;
+      color: #7c3aed;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
       font-weight: bold;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 40px 20px;
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-sizing: border-box;
     }
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      padding: 20px;
-      text-align: center;
+    button {
+      background-color: #7c3aed;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      width: 100%;
+      font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
-      color: #111827;
-      transition: transform 0.2s;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
-      background: #ede9fe;
-    }
-
-    .card span {
-      font-size: 40px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: #6b7280;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <header>📚 Wafula Educational Posts</header>
-
-  <div class="grid">
-    <a href="pdfs.html" class="card">
-      <span>📄</span>
-      PDFs
-    </a>
-    <a href="videos.html" class="card">
-      <span>🎥</span>
-      Videos
-    </a>
-    <a href="images.html" class="card">
-      <span>🖼️</span>
-      Images
-    </a>
-    <a href="texts.html" class="card">
-      <span>📝</span>
-      Text Notes
-    </a>
+  <div class="login" id="loginBox">
+    <h2>Admin Login</h2>
+    <label>Password:</label>
+    <input type="password" id="adminPass" />
+    <button onclick="checkLogin()">Login</button>
   </div>
 
-  <footer>
-    <a href="admin.html" style="color: #7c3aed; text-decoration: none; font-weight: bold;">🔐 Admin</a>
-    <br>© 2025 Wafula Educational Posts
-  </footer>
+  <div class="upload-section hidden" id="uploadBox">
+    <h2>Upload Content</h2>
+    <label>Title:</label>
+    <input type="text" id="title" />
+
+    <label>Category:</label>
+    <select id="category">
+      <option value="pdfs">PDF</option>
+      <option value="videos">Video</option>
+      <option value="images">Image</option>
+      <option value="texts">Text</option>
+    </select>
+
+    <label>File/Link:</label>
+    <input type="text" id="fileUrl" placeholder="Paste Firebase file URL or text..."/>
+
+    <button onclick="uploadMaterial()">Upload</button>
+  </div>
+
+  <script>
+    const PASSWORD = "quicktel2025";
+
+    function checkLogin() {
+      const input = document.getElementById("adminPass").value;
+      if (input === PASSWORD) {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("uploadBox").classList.remove("hidden");
+      } else {
+        alert("Incorrect password");
+      }
+    }
+
+    function uploadMaterial() {
+      const title = document.getElementById("title").value.trim();
+      const category = document.getElementById("category").value;
+      const fileUrl = document.getElementById("fileUrl").value.trim();
+
+      if (!title || !fileUrl) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      alert(`Uploaded ${title} to ${category}`);
+      // Replace this alert with real upload logic using Firebase or backend
+    }
+  </script>
 
 </body>
 </html>

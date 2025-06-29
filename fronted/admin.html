@@ -81,39 +81,73 @@
       <option value="texts">Text</option>
     </select>
 
-    <label>File/Link:</label>
-    <input type="text" id="fileUrl" placeholder="Paste Firebase file URL or text..."/>
+    <label>Select File:</label>
+    <input type="file" id="fileInput" />
 
-    <button onclick="uploadMaterial()">Upload</button>
+    <button onclick="uploadFile()">Upload</button>
   </div>
 
-  <script>
-    const PASSWORD = "quicktel2025";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-storage.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    function checkLogin() {
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwAxP-MWwNnKP59PA6joil4Ceq10eozlc",
+      authDomain: "wafula-s-educational-posts.firebaseapp.com",
+      databaseURL: "https://wafula-s-educational-posts-default-rtdb.firebaseio.com",
+      projectId: "wafula-s-educational-posts",
+      storageBucket: "wafula-s-educational-posts.appspot.com",
+      messagingSenderId: "1040710248503",
+      appId: "1:1040710248503:web:87fbd02de2b919511577b2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
+
+    window.checkLogin = function () {
       const input = document.getElementById("adminPass").value;
-      if (input === PASSWORD) {
+      if (input === "quicktel2025") {
         document.getElementById("loginBox").classList.add("hidden");
         document.getElementById("uploadBox").classList.remove("hidden");
       } else {
         alert("Incorrect password");
       }
-    }
+    };
 
-    function uploadMaterial() {
+    window.uploadFile = function () {
+      const file = document.getElementById("fileInput").files[0];
       const title = document.getElementById("title").value.trim();
       const category = document.getElementById("category").value;
-      const fileUrl = document.getElementById("fileUrl").value.trim();
 
-      if (!title || !fileUrl) {
-        alert("Please fill in all fields.");
+      if (!file || !title) {
+        alert("Please enter a title and select a file.");
         return;
       }
 
-      alert(`Uploaded ${title} to ${category}`);
-      // Replace this alert with real upload logic using Firebase or backend
-    }
-  </script>
+      const storageRef = ref(storage, `${category}/${title}-${Date.now()}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
+      uploadTask.on('state_changed', 
+        null,
+        (error) => alert("Upload failed: " + error.message),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            addDoc(collection(db, "materials"), {
+              title: title,
+              category: category,
+              url: downloadURL,
+              timestamp: Date.now()
+            }).then(() => {
+              alert("✅ Upload successful and saved to database!");
+            }).catch((err) => {
+              alert("Error saving to Firestore: " + err.message);
+            });
+          });
+        }
+      );
+    };
+  </script>
 </body>
 </html>

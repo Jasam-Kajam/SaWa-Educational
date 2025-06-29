@@ -107,50 +107,6 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
 </script>
-
-    const app = initializeApp(firebaseConfig);
-    const storage = getStorage(app);
-    const db = getFirestore(app);
-
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      const input = document.getElementById("adminPass").value;
-      if (input === "quicktel2025") {
-        document.getElementById("loginBox").classList.add("hidden");
-        document.getElementById("uploadBox").classList.remove("hidden");
-      } else {
-        alert("Incorrect password");
-      }
-    });
-
-    document.getElementById("uploadBtn").addEventListener("click", () => {
-      const file = document.getElementById("fileInput").files[0];
-      const title = document.getElementById("title").value.trim();
-      const category = document.getElementById("category").value;
-
-      if (!file || !title) {
-        alert("Please enter a title and select a file.");
-        return;
-      }
-
-      const storageRef = ref(storage, `${category}/${title}-${Date.now()}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on('state_changed', 
-        null,
-        (error) => alert("Upload failed: " + error.message),
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            addDoc(collection(db, "materials"), {
-              title: title,
-              category: category,
-              url: downloadURL,
-              timestamp: Date.now()
-            }).then(() => {
-              alert("✅ Upload successful and saved to database!");
-            }).catch((err) => {
-              alert("Error saving to Firestore: " + err.message);
-            });
-          });
         }
       );
     });

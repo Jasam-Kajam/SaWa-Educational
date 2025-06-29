@@ -65,7 +65,7 @@
     <h2>Admin Login</h2>
     <label>Password:</label>
     <input type="password" id="adminPass" />
-    <button onclick="checkLogin()">Login</button>
+    <button id="loginBtn">Login</button>
   </div>
 
   <div class="upload-section hidden" id="uploadBox">
@@ -84,7 +84,7 @@
     <label>Select File:</label>
     <input type="file" id="fileInput" />
 
-    <button onclick="uploadFile()">Upload</button>
+    <button id="uploadBtn">Upload</button>
   </div>
 
   <script type="module">
@@ -106,7 +106,7 @@
     const storage = getStorage(app);
     const db = getFirestore(app);
 
-    window.checkLogin = function () {
+    document.getElementById("loginBtn").addEventListener("click", () => {
       const input = document.getElementById("adminPass").value;
       if (input === "quicktel2025") {
         document.getElementById("loginBox").classList.add("hidden");
@@ -114,9 +114,9 @@
       } else {
         alert("Incorrect password");
       }
-    };
+    });
 
-    window.uploadFile = function () {
+    document.getElementById("uploadBtn").addEventListener("click", () => {
       const file = document.getElementById("fileInput").files[0];
       const title = document.getElementById("title").value.trim();
       const category = document.getElementById("category").value;
@@ -147,7 +147,7 @@
           });
         }
       );
-    };
+    });
   </script>
 </body>
 </html>

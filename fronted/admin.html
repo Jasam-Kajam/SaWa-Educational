@@ -3,40 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Wafula Educational Posts</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Admin Upload - Wafula Educational Posts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+      color: #1f2937;
+    }
+
+    .login, .upload-section {
+      max-width: 400px;
+      background: white;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      text-align: center;
+      color: #7c3aed;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #7c3aed;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h2>Admin Upload</h2>
-  <form id="uploadForm">
-    <input type="text" name="title" placeholder="Material Title" required />
-    <input type="text" name="category" placeholder="Category" required />
-    <select name="fileType" required>
-      <option value="pdf">PDF</option>
-      <option value="video">Video</option>
-      <option value="image">Image</option>
+
+  <div class="login" id="loginBox">
+    <h2>Admin Login</h2>
+    <label>Password:</label>
+    <input type="password" id="adminPass" />
+    <button onclick="checkLogin()">Login</button>
+  </div>
+
+  <div class="upload-section hidden" id="uploadBox">
+    <h2>Upload Content</h2>
+    <label>Title:</label>
+    <input type="text" id="title" />
+
+    <label>Category:</label>
+    <select id="category">
+      <option value="pdfs">PDF</option>
+      <option value="videos">Video</option>
+      <option value="images">Image</option>
+      <option value="texts">Text</option>
     </select>
-    <input type="file" name="file" required />
-    <input type="password" name="adminPassword" placeholder="Admin Password" required />
-    <button type="submit">Upload</button>
-  </form>
+
+    <label>File/Link:</label>
+    <input type="text" id="fileUrl" placeholder="Paste Firebase file URL or text..."/>
+
+    <button onclick="uploadMaterial()">Upload</button>
+  </div>
 
   <script>
-    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
+    const PASSWORD = "quicktel2025";
 
-      const res = await fetch('https://sawa-educational-backend.onrender.com/upload', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Basic ' + btoa('admin:' + form.adminPassword.value)
-        },
-        body: formData
-      });
+    function checkLogin() {
+      const input = document.getElementById("adminPass").value;
+      if (input === PASSWORD) {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("uploadBox").classList.remove("hidden");
+      } else {
+        alert("Incorrect password");
+      }
+    }
 
-      alert(await res.text());
-    });
+    function uploadMaterial() {
+      const title = document.getElementById("title").value.trim();
+      const category = document.getElementById("category").value;
+      const fileUrl = document.getElementById("fileUrl").value.trim();
+
+      if (!title || !fileUrl) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      alert(`Uploaded ${title} to ${category}`);
+      // Replace this alert with real upload logic using Firebase or backend
+    }
   </script>
+
 </body>
 </html>

@@ -2,85 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PDF Library - Wafula Educational Posts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Media Website</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8fafc;
       margin: 0;
       padding: 0;
-      color: #1f2937;
+      background: #f9f9f9;
     }
 
     header {
-      background-color: #7c3aed;
+      background: #333;
       color: white;
       text-align: center;
-      padding: 20px;
-      font-size: 22px;
-      font-weight: bold;
+      padding: 1rem;
     }
 
-    .container {
-      padding: 20px;
-      max-width: 1000px;
-      margin: auto;
+    section {
+      padding: 1rem;
     }
 
-    .pdf-card {
+    h2 {
+      margin-top: 1rem;
+    }
+
+    .media-card {
+      margin-bottom: 2rem;
       background: white;
+      padding: 1rem;
       border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    .pdf-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    iframe {
+    video, iframe {
       width: 100%;
-      height: 300px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .pay-btn {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #7c3aed;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
 
-  <header>📄 PDF Library</header>
-  <div class="container">
+  <header>
+    <h1>📚 Media Library</h1>
+  </header>
 
-    <!-- Example PDF Item -->
-    <div class="pdf-card">
-      <div class="pdf-title">Introduction to Algebra</div>
-      <iframe src="https://example.com/sample.pdf"></iframe>
-      <a href="self.html?bundle=Introduction%20to%20Algebra&price=50" class="pay-btn">Pay Ksh 50 to Download</a>
+  <section>
+    <h2>🎬 Video</h2>
+    <div class="media-card">
+      <video controls>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support video.
+      </video>
+      <p>Funny bunny cartoon</p>
     </div>
 
-    <div class="pdf-card">
-      <div class="pdf-title">Environmental Science Notes</div>
-      <iframe src="https://example.com/sample2.pdf"></iframe>
-      <a href="self.html?bundle=Environmental%20Science%20Notes&price=50" class="pay-btn">Pay Ksh 50 to Download</a>
+    <h2>📄 PDF</h2>
+    <div class="media-card">
+      <iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" height="600px">
+        This browser does not support PDFs. <a href="#">Download PDF</a>
+      </iframe>
+      <p>Sample PDF Document</p>
     </div>
+  </section>
 
-    <!-- Add more PDFs as needed -->
-
-  </div>
 </body>
 </html>

@@ -12,8 +12,7 @@
     h2 { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 2rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
     .card { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
-    iframe { width: 100%; border: none; border-radius: 8px; }
-    .pdf-frame { height: 360px; pointer-events: none; }
+    iframe { width: 100%; border: none; border-radius: 8px; height: 360px; }
     .buttons { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
     button, .download {
       background: #27ae60; color: white; padding: 0.6rem 1.2rem;
@@ -28,7 +27,7 @@
       alert("🚫 Right-click disabled to protect content.");
     });
 
-    function unlockPDF(pdfId, dlId, fileId) {
+    function unlockPDF(dlId, fileId) {
       const handler = PaystackPop.setup({
         key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
         email: "user@example.com",
@@ -36,9 +35,6 @@
         currency: "KES",
         callback: function (response) {
           alert("✅ Payment successful!");
-          const iframe = document.getElementById(pdfId);
-          iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
-          iframe.style.pointerEvents = "auto";
           document.getElementById(dlId).style.display = "inline-block";
         },
         onClose: function () {
@@ -81,10 +77,10 @@
   <div class="grid">
 
     <div class="card">
-      <iframe id="pdf1" class="pdf-frame" src=""></iframe>
-      <p>Advanced HTML Notes (Google Drive)</p>
+      <iframe src="https://drive.google.com/file/d/1BiT619cXbFxs2HacMRYLbfgI7OdLJZcP/preview"></iframe>
+      <p>Advanced HTML Notes </p>
       <div class="buttons">
-        <button onclick="unlockPDF('pdf1', 'dl1', '1BiT619cXbFxs2HacMRYLbfgI7OdLJZcP')">Unlock</button>
+        <button onclick="unlockPDF('dl1', '1BiT619cXbFxs2HacMRYLbfgI7OdLJZcP')">Unlock to Download</button>
         <a id="dl1" class="download" href="https://drive.google.com/uc?export=download&id=1BiT619cXbFxs2HacMRYLbfgI7OdLJZcP" target="_blank" download>Download PDF</a>
       </div>
     </div>

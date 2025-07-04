@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Video Website</title>
+  <title>Videos & PDF - Media Library</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
-      padding: 0;
+      background: #f9f9f9;
     }
 
     header {
@@ -19,55 +18,76 @@
       text-align: center;
     }
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
+    section {
+      max-width: 1000px;
+      margin: auto;
       padding: 1rem;
     }
 
-    .video-card {
-      background: white;
-      padding: 10px;
+    h2 {
+      color: #222;
+      margin-top: 2rem;
+    }
+
+    .media-card {
+      margin-bottom: 2rem;
+      background: #fff;
+      padding: 1rem;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    video {
+    iframe, video {
       width: 100%;
       border-radius: 10px;
+      height: 315px;
     }
 
-    h3 {
-      margin: 0.5rem 0;
+    .pdf-frame {
+      height: 600px;
+    }
+
+    p {
+      margin: 0.5rem 0 0 0;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>🎬 My Video Website</h1>
+    <h1>📺 Video & PDF Library</h1>
   </header>
 
-  <div class="container">
-    <div class="video-card">
-      <video controls>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
-      </video>
-      <h3>Big Buck Bunny</h3>
-      <p>Sample video about a funny bunny.</p>
+  <section>
+    <h2>🎞️ YouTube Videos</h2>
+
+    <div class="media-card">
+      <iframe src="https://www.youtube.com/embed/mqtmpKIyEVQ" frameborder="0" allowfullscreen></iframe>
+      <p>Normal YouTube Video</p>
     </div>
 
-    <div class="video-card">
-      <video controls>
-        <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
-      </video>
-      <h3>Bear Video</h3>
-      <p>Nature video showcasing a bear in the wild.</p>
+    <div class="media-card">
+      <iframe src="https://www.youtube.com/embed/8qOjP_UyHCs" frameborder="0" allowfullscreen></iframe>
+      <p>YouTube Live Recording 1</p>
     </div>
-  </div>
+
+    <div class="media-card">
+      <iframe src="https://www.youtube.com/embed/NaJO-yiS_pg" frameborder="0" allowfullscreen></iframe>
+      <p>YouTube Live Recording 2</p>
+    </div>
+
+    <div class="media-card">
+      <iframe src="https://www.youtube.com/embed/5oI67DVAwnE" frameborder="0" allowfullscreen></iframe>
+      <p>YouTube Live Recording 3</p>
+    </div>
+
+    <h2>📄 PDF Document</h2>
+    <div class="media-card">
+      <iframe class="pdf-frame" src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"></iframe>
+      <p>Sample PDF file (replace this with your own)</p>
+    </div>
+
+  </section>
 
 </body>
 </html>

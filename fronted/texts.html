@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🎓 Premium Videos & PDFs</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>📘 Educational Materials</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <style>
-    body { font-family: Arial; margin:0; background:#f4f4f4; }
-    header { background:#2c3e50; color:white; padding:1rem; text-align:center; }
-    section { max-width:1000px; margin:auto; padding:1rem; }
-    h2 { color:#2c3e50; border-bottom:2px solid #ccc; padding-bottom:5px; margin-top:2rem; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; }
-    .card { background:white; padding:1rem; border-radius:8px; box-shadow:0 0 8px rgba(0,0,0,0.1); }
-    iframe { width:100%; border-radius:4px; border:none; }
-    .pdf-frame { height:360px; pointer-events:none; }
-    .buttons { margin-top:0.5rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
-    button, a.download { background:#27ae60; color:white; padding:0.5rem 1rem; border:none; border-radius:4px; cursor:pointer; text-decoration:none; }
-    button:hover, a.download:hover { background:#219150; }
-    a.download { display:none; }
-    footer { text-align:center; padding:1rem; font-size:14px; color:#555; }
+    body { font-family: Arial; background: #f4f4f4; margin: 0; padding: 0; }
+    header { background: #2c3e50; color: white; text-align: center; padding: 1rem; }
+    section { max-width: 1000px; margin: auto; padding: 1rem; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+    .card { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    iframe { width: 100%; border: none; border-radius: 8px; }
+    .pdf-frame { height: 360px; pointer-events: none; }
+    .buttons { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    button, .download {
+      background: #27ae60; color: white; padding: 0.6rem 1.2rem;
+      border: none; border-radius: 6px; cursor: pointer; text-decoration: none;
+    }
+    .download { display: none; }
+    footer { text-align: center; color: #888; padding: 1rem; }
   </style>
   <script>
-    document.addEventListener("contextmenu", e => { e.preventDefault(); alert("🚫 Right-click disabled to protect content."); });
-    function unlockPDF(pdfId, dlId) {
-      let handler = PaystackPop.setup({
+    document.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      alert("🚫 Right-click disabled to protect content.");
+    });
+
+    function unlockPDF(pdfId, dlId, fileId) {
+      const handler = PaystackPop.setup({
         key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
-        email: 'user@example.com',
-        amount: 2000, currency: 'KES',
-        callback: response => {
-          alert("✅ Payment successful! PDF unlocked.");
-          document.getElementById(pdfId).style.pointerEvents = "auto";
+        email: "user@example.com",
+        amount: 2000,
+        currency: "KES",
+        callback: function (response) {
+          alert("✅ Payment successful!");
+          const iframe = document.getElementById(pdfId);
+          iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
+          iframe.style.pointerEvents = "auto";
           document.getElementById(dlId).style.display = "inline-block";
         },
-        onClose: () => alert("❌ Payment cancelled. No access granted.")
+        onClose: function () {
+          alert("❌ Payment cancelled.");
+        }
       });
       handler.openIframe();
     }
@@ -40,38 +51,51 @@
 </head>
 <body>
 
-  <header><h1>🎓 Premium Educational Videos & PDFs</h1></header>
+<header>
+  <h1>📘 Educational Materials</h1>
+</header>
 
-  <section>
-    <h2>🎬 Video Tutorials</h2>
-    <div class="grid">
-      <div class="card"><iframe src="https://www.youtube.com/embed/mqtmpKIyEVQ?rel=0&modestbranding=1" allowfullscreen></iframe><p>Intro to HTML</p></div>
-      <div class="card"><iframe src="https://www.youtube.com/embed/8qOjP_UyHCs?rel=0&modestbranding=1" allowfullscreen></iframe><p>CSS Basics</p></div>
-      <div class="card"><iframe src="https://www.youtube.com/embed/NaJO-yiS_pg?rel=0&modestbranding=1" allowfullscreen></iframe><p>JavaScript Crash Course</p></div>
-      <div class="card"><iframe src="https://www.youtube.com/embed/5oI67DVAwnE?rel=0&modestbranding=1" allowfullscreen></iframe><p>Responsive Web Design</p></div>
+<section>
+
+  <h2>🎬 Video Tutorials</h2>
+  <div class="grid">
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/mqtmpKIyEVQ?rel=0&modestbranding=1" allowfullscreen></iframe>
+      <p>Intro to HTML</p>
+    </div>
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/8qOjP_UyHCs?rel=0&modestbranding=1" allowfullscreen></iframe>
+      <p>CSS Basics</p>
+    </div>
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/NaJO-yiS_pg?rel=0&modestbranding=1" allowfullscreen></iframe>
+      <p>JavaScript Crash Course</p>
+    </div>
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/5oI67DVAwnE?rel=0&modestbranding=1" allowfullscreen></iframe>
+      <p>Responsive Web Design</p>
+    </div>
+  </div>
+
+  <h2>📄 PDF Materials (KES 20)</h2>
+  <div class="grid">
+
+    <div class="card">
+      <iframe id="pdf1" class="pdf-frame" src=""></iframe>
+      <p>Advanced HTML Notes (Google Drive)</p>
+      <div class="buttons">
+        <button onclick="unlockPDF('pdf1', 'dl1', '1BiT619cXbFxs2HacMRYLbfgI7OdLJZcP')">Pay to Unlock</button>
+        <a id="dl1" class="download" href="https://drive.google.com/uc?export=download&id=1BiT619cXbFxs2HacMRYLbfgI7OdLJZcP" target="_blank" download>Download PDF</a>
+      </div>
     </div>
 
-    <h2>📄 PDFs (KES 20 each)</h2>
-    <div class="grid">
-      <div class="card">
-        <iframe id="pdf1" class="pdf-frame" src="https://supersimpledev.github.io/references/html-css-reference.pdf"></iframe>
-        <p>HTML & CSS Reference</p>
-        <div class="buttons">
-          <button onclick="unlockPDF('pdf1','dl1')">Pay to Unlock</button>
-          <a id="dl1" class="download" href="https://supersimpledev.github.io/references/html-css-reference.pdf" download>Download PDF</a>
-        </div>
-      </div>
-      <div class="card">
-        <iframe id="pdf2" class="pdf-frame" src="https://www3.cs.stonybrook.edu/~pramod.ganapathi/doc/CSE102/CSE102-CheatSheetCSSLong.pdf"></iframe>
-        <p>CSS Cheatsheet</p>
-        <div class="buttons">
-          <button onclick="unlockPDF('pdf2','dl2')">Pay to Unlock</button>
-          <a id="dl2" class="download" href="https://www3.cs.stonybrook.edu/~pramod.ganapathi/doc/CSE102/CSE102-CheatSheetCSSLong.pdf" download>Download PDF</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 
-  <footer>&copy; 2025 Wafula Educational Posts</footer>
+</section>
+
+<footer>
+  &copy; 2025 Wafula Educational Posts
+</footer>
+
 </body>
 </html>

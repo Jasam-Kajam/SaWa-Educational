@@ -1,12 +1,8 @@
 <?php
-  $title = "Media Website - Video & PDF";
-  $headerText = "Media Library";
-  $videoSrc = "https:                                      
-  $pdfSrc = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
-  $videoDescription = "Big Buck Bunny sample video";
-  $pdfDescription = "Example PDF from W3C — You can replace this link with your own PDF";
+  $title = "Master Content Creations";
+  $year = date("Y");
+  $showAdmin = true; // Toggle admin link visibility
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,35 +10,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><?php echo $title; ?></title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
-    header { background: #333; color: white; text-align: center; padding: 1rem; }
-    section { padding: 1rem; max-width: 1000px; margin: auto; }
-    h2 { margin-top: 2rem; color: #333; }
-    .media-card { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    video, iframe { width: 100%; border-radius: 10px; }
-    p { margin: 0.5rem 0 0 0; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+    }
+
+    header {
+      background-color: #7c3aed;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: #111827;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: #ede9fe;
+    }
+
+    .card span {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .admin-link {
+      <?php echo $showAdmin ? '' : 'display: none;'; ?>
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>📚 <?php echo $headerText; ?></h1>
-  </header>
-  <section>
-    <h2>🎬 Video</h2>
-    <div class="media-card">
-      <video controls>
-        <source src="<?php echo $videoSrc; ?>" type="video/mp4">
-        Your browser does not support video.
-      </video>
-      <p><?php echo $videoDescription; ?></p>
-    </div>
-    <h2>📄 PDF Document</h2>
-    <div class="media-card">
-      <iframe src="<?php echo $pdfSrc; ?>" height="600px">
-        This browser does not support PDFs. Please <a href="<?php echo $pdfSrc; ?>">download the PDF</a>.
-      </iframe>
-      <p><?php echo $pdfDescription; ?></p>
-    </div>
-  </section>
+
+  <header>📚 <?php echo $title; ?></header>
+
+  <div class="grid">
+    <a href="pdfs.html" class="card">
+      <span>📄</span>
+      PDFs
+    </a>
+    <a href="videos.html" class="card">
+      <span>🎥</span>
+      Videos
+    </a>
+    <a href="texts.html" class="card">
+      <span>📚</span>
+      Website Creation tutorials
+    </a>
+    <a href="images.html" class="card">
+      <span>🖼️</span>
+      Images
+    </a>
+    <a href="texts.html" class="card">
+      <span>📝</span>
+      Text Notes
+    </a>
+  </div>
+
+  <footer>
+    <?php if ($showAdmin): ?>
+      <a href="admin.html" class="admin-link">🔐 Admin</a><br>
+    <?php endif; ?>
+    © <?php echo $year; ?> Wafula Educational Posts
+  </footer>
+
 </body>
 </html>

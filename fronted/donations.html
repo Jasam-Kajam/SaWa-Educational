@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📳DONATIONS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <style>
+    body { font-family: Arial; background: #f4f4f4; margin: 0; padding: 0; }
+    header { background: #2c3e50; color: white; text-align: center; padding: 1rem; }
+    section { max-width: 1000px; margin: auto; padding: 1rem; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+    .card { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    iframe { width: 100%; border: none; border-radius: 8px; height: 360px; }
+    .buttons { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    button, .download, .paypal {
+      background: #27ae60; color: white; padding: 0.6rem 1.2rem;
+      border: none; border-radius: 6px; cursor: pointer; text-decoration: none;
+    }
+    .paypal {
+      background: #0070ba; /* PayPal Blue */
+    }
+    .download { display: none; }
+    input[type="number"] {
+      padding: 0.6rem; border-radius: 6px; border: 1px solid #ccc;
+      width: 120px;
+    }
+    footer { text-align: center; color: #888; padding: 1rem; }
+  </style>
+
+  <script>
+    document.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      alert("🚫 Right-click disabled to protect content.");
+    });
+
+    function unlockPDF(dlId, fileId) {
+      const amountInput = document.getElementById("donationAmount");
+      let amountValue = parseFloat(amountInput.value);
+
+      if (isNaN(amountValue) || amountValue < 10) {
+        alert("⚠️ Please enter a valid amount (minimum KES 10).");
+        return;
+      }
+
+      const handler = PaystackPop.setup({
+        key: 'pk_live_3b95d82d975d8cd88f2e0059b1d6dca62c1db036',
+        email: "user@example.com",
+        amount: amountValue * 100, // Paystack uses kobo
+        currency: "KES",
+        callback: function (response) {
+          alert("✅ Payment successful!");
+          document.getElementById(dlId).style.display = "inline-block";
+        },
+        onClose: function () {
+          alert("❌ Payment cancelled.");
+        }
+      });
+      handler.openIframe();
+    }
+  </script>
+</head>
+<body>
+
+<header>
+  <h1>DONATIONS Platform</h1>
+</header>
+
+<section>
+
+  <div class="card">
+    <iframe src="https://public-files-paystack-prod.s3.eu-west-1.amazonaws.com/integration-logos/rssmtvcf4bathncmrv37.jpeg"></iframe>
+    <p>THANK YOU FOR YOUR KIND GIVING</p>
+
+    <div class="buttons">
+      <input type="number" id="donationAmount" placeholder="Amount (KES)" min="10" />
+      <button onclick="unlockPDF('dl2', '18_leQsYHz4SXhYv7m86eyY_LNzA38MqL')">Donate via Paystack</button>
+
+      <!-- PayPal Donate Button -->
+      <a class="paypal" href="https://www.paypal.com/paypalme/YourUsername" target="_blank">Donate via PayPal</a>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  &copy; 2025 Wafula Educational Posts
+</footer>
+
+</body>
+</html>
